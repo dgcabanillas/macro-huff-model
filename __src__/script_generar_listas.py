@@ -78,7 +78,7 @@ def main( inputs ):
                 select distinct
                     A.nombre_de_la_tienda as nombre,
                     A.cod_unico
-                from """ + data_set + """.tb_supermercados_zs A  -- CAMBIAR tb_supermercados_zs!!!
+                from """ + data_set + """.Demanda_Supermercado_Zs A
                 inner join """ + data_set + """.auxtb_lista_zonas B
                         on A.cod_unico = B.cod_unico
                        and B.usuario = '"""+ inputs['usuario'] + """'
