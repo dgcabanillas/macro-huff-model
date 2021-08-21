@@ -16,7 +16,7 @@ begin
     ),
     aux_demanda_manzanas as (
 
-        select A.* 
+        select A.* except(Poligono_Zs)
         from intercorpretail_automatizaciones.Demanda_Manzanas A
         left join base_zonas_parciales B
                on A.cod_unico = B.cod_unico
@@ -24,7 +24,7 @@ begin
 
         union distinct
 
-        select A.*
+        select A.* except(Poligono_Zs)
         from intercorpretail_automatizaciones.Demanda_Manzanas A
         inner join prebase_manzanas B
                 on A.id_manzana = B.manzana

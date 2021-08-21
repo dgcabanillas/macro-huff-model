@@ -17,7 +17,7 @@ begin
         left join intercorpretail_automatizaciones.Demanda_Supermercados C 
                on B.ciudad = C.ciudad 
               -- acá se puede usar cod_unico de A y C si C lo tuviera
-              and ST_DISTANCE(ST_GEOGPOINT(B.x_manzana, B.y_manzana), ST_GEOGPOINT(C.longitud, C.latitud)) < 100 
+              and ST_DISTANCE(ST_GEOGPOINT(B.x_manzana, B.y_manzana), ST_GEOGPOINT(C.longitud, C.latitud)) < 500 
         where A.usuario = p_usuario
           and (C.formato = p_formato or p_formato = '--todos--')
           and C.nombre is not null
