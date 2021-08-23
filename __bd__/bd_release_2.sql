@@ -7,4 +7,8 @@ alter table intercorpretail_automatizaciones.auxtb_superm_zona add column porcen
 create table intercorpretail_automatizaciones.auxtb_filtro_manzanas (
     usuario     string,
     manzana     string
-)
+);
+create table intercorpretail_automatizaciones.auxtb_formatos_seleccionados (
+    usuario     string,
+    formato     string
+);

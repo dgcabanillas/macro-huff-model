@@ -136,7 +136,8 @@ begin
     )
     select 
         A.supermercado,
-        A.zona,
+        case when E.cod_unico is null then A.zona
+             else A.zona || '"' end         as zona,
         A.M_k,
         B.distancia,
         C.sv                                as SV,
@@ -150,5 +151,7 @@ begin
     inner join base D
             on A.supermercado = D.supermercado
            and A.zona = D.zona
+    left join base_zonas_parciales E
+           on A.zona = E.cod_unico
     order by A.zona, B.distancia;
 end;

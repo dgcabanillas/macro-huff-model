@@ -153,7 +153,7 @@ def main( inputs ):
             l_zonas = original_df.index.tolist()
 
             for zona in l_zonas:
-                df_tmp_zona = df_mk[ df_mk['zona'] == zona ]
+                df_tmp_zona = df_mk[(df_mk['zona'] == zona) | (df_mk['zona'] == zona + '"')]
                 if len(df_tmp_zona.index.tolist()) > 0:
                     row_eval = df_tmp_zona[ df_tmp_zona['supermercado'] == eval ].iloc[0]
                     # variables totales

@@ -4,6 +4,27 @@ import pandas as pd
 from GCP import GCP
 from funciones import get_inputs, get_param, validate_inputs, print_args
 
+def insertar_formatos_seleccionados ( gcp, data_set, usuario ):
+    df_formatos = pd.read_excel("__tmp__/tmp_formatos_seleccionados.xlsx")
+    isEmpty = True
+    data_to_insert = "insert into " + data_set + ".auxtb_formatos_seleccionados (formato, usuario) values"
+
+    for i, row in df_formatos.iterrows():
+        if i == 0: 
+            isEmpty = False
+        data_to_insert += ("\n\t\t\t('"+ row['Formatos'] + "', '" + usuario + "'),")
+
+    if not isEmpty: 
+        data_to_insert = data_to_insert[:-1] + ';'
+        gcp.ejecutar_sp("""
+            begin
+                delete """ + data_set + """.auxtb_formatos_seleccionados
+                where usuario = '"""+ usuario + """';
+
+                """ + data_to_insert + """
+            end;
+        """, show=True)
+
 def main( inputs ):
     # Cambiamos al directorio donde se encuentra este script
     os.chdir(sys.path[0])
@@ -13,7 +34,7 @@ def main( inputs ):
     data_set    = get_param('data_set')
 
     # Listamos los argumentos necesarios y validamos que no falte alguno
-    args = ['latitud', 'longitud', 'radio', 'usuario', 'formato']
+    args = ['latitud', 'longitud', 'radio', 'usuario']
     valid = validate_inputs(args, inputs)
 
     if valid: 
@@ -41,10 +62,9 @@ def main( inputs ):
                     declare v_eval GEOGRAPHY default ST_GEOGPOINT(""" + inputs['longitud'] + "," + inputs['latitud'] + """);
                     declare v_radio FLOAT64 default """ + inputs['radio'] +""";
                     declare v_usuario STRING default '""" + inputs['usuario'] + """';
-                    declare v_formato STRING default '""" + inputs['formato'] + """';
 
                     call """ + data_set + """.sp_crear_lista_zonas (v_eval, v_radio, v_usuario);
-                    call """ + data_set + """.sp_crear_lista_supermercados (v_eval, v_radio, v_usuario, v_formato);
+                    call """ + data_set + """.sp_crear_lista_supermercados (v_eval, v_radio, v_usuario, '');
                 end;
             """)
 
@@ -109,6 +129,13 @@ def main( inputs ):
         except:
             print('\nAlgo salió mal en la creación del tablero.')
             print('\tCierre el archivo "tmp_output.xlsx"')
+            return
+
+        try:
+            insertar_formatos_seleccionados( gcp, data_set, inputs['usuario'] )
+        except:
+            print('\nAlgo salió mal en la inserción de formatos.')
+            print('\tCierre el archivo "tmp_formatos_seleccionados.xlsx"')
             return
 
     return

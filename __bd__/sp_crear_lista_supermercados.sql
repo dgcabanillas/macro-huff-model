@@ -9,6 +9,11 @@ begin
     where usuario = p_usuario;
     insert into intercorpretail_automatizaciones.auxtb_lista_supermercados
     with 
+    base_formatos as (
+        select distinct formato
+        from intercorpretail_automatizaciones.auxtb_formatos_seleccionados
+        where usuario = p_usuario
+    ),
     base_nombres_super as (
         select distinct C.nombre
         from intercorpretail_automatizaciones.auxtb_lista_zonas A
@@ -19,8 +24,22 @@ begin
               -- acá se puede usar cod_unico de A y C si C lo tuviera
               and ST_DISTANCE(ST_GEOGPOINT(B.x_manzana, B.y_manzana), ST_GEOGPOINT(C.longitud, C.latitud)) < 500 
         where A.usuario = p_usuario
-          and (C.formato = p_formato or p_formato = '--todos--')
+          and (
+              C.formato in (select formato from base_formatos)
+              or '--todos--' in (select formato from base_formatos)
+          )
           and C.nombre is not null
+
+        union distinct
+
+        select distinct C.nombre
+        from intercorpretail_automatizaciones.auxtb_lista_zonas A
+        left join intercorpretail_automatizaciones.Demanda_Supermercado_Zs B 
+            on A.cod_unico = B.cod_unico
+        inner join intercorpretail_automatizaciones.Demanda_Supermercados C
+                on B.nombre_de_la_tienda = C.nombre
+        where A.usuario = p_usuario
+        and C.nombre is not null
     ),
     base_distancia_a_eval as (
         select 
