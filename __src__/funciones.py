@@ -3,12 +3,12 @@ def get_param( param ):
         'gcp_project':  'inretail-negocios-sd',
         'data_set':     'intercorpretail_automatizaciones'
     }
-    
+    """
     params = {
         'gcp_project':  'intercorp-dev',
         'data_set':     'intercorpretail_automatizaciones'
     }
-    
+    """
     return params.get(param, '')
 
 def get_inputs(args):
