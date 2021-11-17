@@ -5,7 +5,7 @@ from GCP import GCP
 from funciones import get_inputs, get_param, validate_inputs, print_args
 
 def insertar_formatos_seleccionados ( gcp, data_set, usuario ):
-    df_formatos = pd.read_excel("__tmp__/tmp_formatos_seleccionados.xlsx")
+    df_formatos = pd.read_excel("__src__/__tmp__/tmp_formatos_seleccionados.xlsx")
     isEmpty = True
     data_to_insert = "insert into " + data_set + ".auxtb_formatos_seleccionados (formato, usuario) values"
 
@@ -90,8 +90,8 @@ def main( inputs ):
                 where usuario = '"""+ inputs['usuario'] + """'
                 order by A.distancia;
             """)
-            df_superm[['nombre', 'factor']].to_excel('__tmp__/tmp_factores.xlsx', index=False)
-            print("\nArchivo '__tmp__/tmp_factores.xlsx' creado y guardado")
+            df_superm[['nombre', 'factor']].to_excel('__src__/__tmp__/tmp_factores.xlsx', index=False)
+            print("\nArchivo '__src__/__tmp__/tmp_factores.xlsx' creado y guardado")
 
             # Obtenemos las relaciones entre supermercados y zonas
             df_superm_zona = gcp.query_to_df("""
@@ -124,8 +124,8 @@ def main( inputs ):
             )
             for i, row in df_superm_zona.iterrows():
                 df_matrix[row['nombre']][row['cod_unico']] = 1
-            df_matrix.to_excel('__tmp__/tmp_output.xlsx')
-            print("\nArchivo '__tmp__/tmp_output.xlsx' creado y guardado")
+            df_matrix.to_excel('__src__/__tmp__/tmp_output.xlsx')
+            print("\nArchivo '__src__/__tmp__/tmp_output.xlsx' creado y guardado")
         except:
             print('\nAlgo salió mal en la creación del tablero.')
             print('\tCierre el archivo "tmp_output.xlsx"')

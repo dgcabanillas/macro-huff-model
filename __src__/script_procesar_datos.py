@@ -5,7 +5,7 @@ from GCP import GCP
 from funciones import get_inputs, get_param, validate_inputs, print_args
 
 def insertar_filtros_manzanas ( gcp, data_set, usuario ):
-    df_filtro_manzanas = pd.read_excel("__tmp__/tmp_filtro_manzanas.xlsx")
+    df_filtro_manzanas = pd.read_excel("__src__/__tmp__/tmp_filtro_manzanas.xlsx")
     isEmpty = True
     data_to_insert = "insert into " + data_set + ".auxtb_filtro_manzanas (manzana, usuario) values"
 
@@ -84,7 +84,7 @@ def main( inputs ):
             insertar_filtros_manzanas( gcp, data_set, inputs['usuario'] )
         except:
             print('\nAlgo salió mal con el filtro de manzanas.')
-            print('\tRevise que exista el archivo "__tmp__/tmp_filtro_manzanas.xlsx"')
+            print('\tRevise que exista el archivo "__src__/__tmp__/tmp_filtro_manzanas.xlsx"')
             return
 
         try:
@@ -137,7 +137,7 @@ def main( inputs ):
             for i, row in df_mk.iterrows():
                 df_tabla_post[row['supermercado']][row['zona']] = row['M_k']
             
-            df_tabla_post.to_excel("__tmp__/tmp_tabla_post.xlsx")
+            df_tabla_post.to_excel("__src__/__tmp__/tmp_tabla_post.xlsx")
         except:
             print('\nAlgo salió mal.')
             print('\tRevise el id de proyecto')
@@ -189,11 +189,11 @@ def main( inputs ):
                             }
                             df_cuadro_final = df_cuadro_final.append(new_row, ignore_index=True)
             
-            df_cuadro_final.to_excel("__tmp__/tmp_cuadro_final.xlsx", index=False)
+            df_cuadro_final.to_excel("__src__/__tmp__/tmp_cuadro_final.xlsx", index=False)
             print("Se ha creado el archivo tmp_cuadro_final.xlsx")
         except:
             print('\n4) Algo salió mal en la generación del cuadro final.')
-            print('\tPuede que tenga abierto el libro "__tmp__/tmp_cuadro_final.xlsx", ciérrelo por favor.')
+            print('\tPuede que tenga abierto el libro "__src__/__tmp__/tmp_cuadro_final.xlsx", ciérrelo por favor.')
             return
 
     return

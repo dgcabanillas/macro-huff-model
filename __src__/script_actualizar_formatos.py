@@ -6,6 +6,7 @@ from funciones import get_param
 def main():
     # Cambiamos al directorio donde se encuentra este script
     os.chdir(sys.path[0])
+    print(os.getcwd())
 
     # parámetros de conexión a GCP
     gcp_project = get_param('gcp_project')
@@ -20,11 +21,11 @@ def main():
             where trim(formato) <> '';
         """)
 
-        df_formato.to_excel('__tmp__/tmp_lista_formatos.xlsx')
-        print("\nArchivo '__tmp__/tmp_lista_formato.xlsx' creado y guardado")
+        df_formato.to_excel('__src__/__tmp__/tmp_lista_formatos.xlsx')
+        print("\nArchivo '__src__/__tmp__/tmp_lista_formato.xlsx' creado y guardado")
     except:
         print('\nAlgo salió mal.')
-        print("Tal vez tenga el archivo '__tmp__/tmp_lista_formatos.xlsx' abierto.")
+        print("Tal vez tenga el archivo '__src__/__tmp__/tmp_lista_formatos.xlsx' abierto.")
         return
 
 # Validamos los parámetros necesarios para ejecutar el script

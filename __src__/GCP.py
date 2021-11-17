@@ -1,7 +1,13 @@
+import os
+import sys
 from google.cloud import bigquery
 
 class GCP:
     def __init__ (self, gcp_project):
+        os.chdir(sys.path[0])
+        os.chdir('..')
+        key_route = os.getcwd().replace('\\', '/') + '/__key__/key.json'
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = key_route
         self.client = bigquery.Client(project=gcp_project)
 
     def ejecutar_sp (self, sp, show=True):
